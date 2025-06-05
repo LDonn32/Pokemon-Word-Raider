@@ -74,5 +74,8 @@ def play_game():
     else:
         print("\nGame over! The word was:", word)
 
+# Using a main guard to run the game
+# This allows the game to be run directly or imported without executing the game automatically.
+# Using this for now until I expand the game with more features or export to exe file
 if __name__ == "__main__":
     play_game()
