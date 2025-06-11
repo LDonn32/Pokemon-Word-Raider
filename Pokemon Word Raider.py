@@ -11,71 +11,67 @@
 # See: https://docs.python.org/3/library/random.html
 import random
 
+# Define the PokemonWordRaider class
+# Using an object instead of a function to run the game. 
+# Doing this allows for easier expansion in the future.
 
-# List of Pokemon names to choose from
-# This list can be expanded with more Pokemon names as needed.
-# The names are in lowercase to ensure consistent comparison during the game.
-POKEMON_LIST = [
-    "pikachu", "bulbasaur", "charmander", "squirtle", "jigglypuff",
-    "meowth", "psyduck", "snorlax", "eevee", "mewtwo",
-    "gengar", "lapras", "dragonite", "magikarp", "gyarados",
-    "machamp", "alakazam", "pidgeotto", "rattata", "sandshrew",
-    "vulpix", "growlithe", "abra", "kadabra", "bellsprout",
-    "tentacool", "geodude", "ponyta", "slowpoke", "magnemite"
-]
+# This class contains the list of Pokemon, the game logic, and methods to display the word and handle guesses.
+class PokemonWordRaider:
+    # List of Pokemon names to guess
+    # This list can be expanded with more Pokemon names as needed.
+    POKEMON_LIST = [
+        "pikachu", "bulbasaur", "charmander", "squirtle", "jigglypuff",
+        "meowth", "psyduck", "snorlax", "eevee", "mewtwo",
+        "gengar", "lapras", "dragonite", "magikarp", "gyarados",
+        "machamp", "alakazam", "pidgeotto", "rattata", "sandshrew",
+        "vulpix", "growlithe", "abra", "kadabra", "bellsprout",
+        "tentacool", "geodude", "ponyta", "slowpoke", "magnemite"
+    ]
+    # Using init method to initialize the game state
+    # This method sets a random Pokemon word, initializes guessed letters, and sets the number of attempts.
+    # See: https://docs.python.org/3/tutorial/classes.html#class-and-instance-variables
+    def __init__(self):
+        self.word = random.choice(self.POKEMON_LIST)
+        self.guessed_letters = set()
+        self.attempts = 6
 
-# Function to choose a random Pokemon word from the list
-# This function returns a random Pokemon name in lowercase.
-def choose_word():
-    return random.choice(POKEMON_LIST).lower()
+    # Method to display the current state of the word with guessed letters revealed
+    # This method returns a string representation of the word with guessed letters shown and unguessed letters as underscores.
+    def display_word(self):
+        return ' '.join([letter if letter in self.guessed_letters else '_' for letter in self.word])
 
-# Function to display the current state of the word being guessed
-# This function takes the word and a set of guessed letters,
-def display_word(word, guessed_letters):
-    return ' '.join([letter if letter in guessed_letters else '_' for letter in word])
+    def play(self):
+        print("Welcome to Pokemon Word Raider!")
+        print("Guess the Pokemon name!")
 
-# Main game function
-# This function handles the game logic, including user input and game flow.
-# Giving users 6 goes to guess the word.
-def play_game():
-    word = choose_word()
-    guessed_letters = set()
-    attempts = 6
+        while self.attempts > 0:
+            print("\nWord:", self.display_word())
+            print("Guessed letters:", ' '.join(sorted(self.guessed_letters)))
+            print(f"Attempts left: {self.attempts}")
 
-    print("Welcome to Pokemon Word Raider!")
-    print("Guess the Pokemon name!")
+            guess = input("Guess a letter: ").lower()
+            if not guess.isalpha() or len(guess) != 1:
+                print("Please enter a single letter.")
+                continue
 
-    # While loop to continue the game until the user runs out of attempts or guesses the word
-    # The loop will display the current state of the word, the guessed letters, and the number of attempts left.
-    while attempts > 0:
-        print("\nWord:", display_word(word, guessed_letters))
-        print("Guessed letters:", ' '.join(sorted(guessed_letters)))
-        print(f"Attempts left: {attempts}")
+            if guess in self.guessed_letters:
+                print("You already guessed that letter.")
+                continue
 
-        guess = input("Guess a letter: ").lower()
-        if not guess.isalpha() or len(guess) != 1:
-            print("Please enter a single letter.")
-            continue
+            self.guessed_letters.add(guess)
 
-        if guess in guessed_letters:
-            print("You already guessed that letter.")
-            continue
-
-        guessed_letters.add(guess)
-
-        if guess in word:
-            print("Good guess!")
-            if all(letter in guessed_letters for letter in word):
-                print("\nCongratulations! You guessed the word:", word)
-                break
+            if guess in self.word:
+                print("Good guess!")
+                if all(letter in self.guessed_letters for letter in self.word):
+                    print("\nCongratulations! You guessed the word:", self.word)
+                    break
+            else:
+                print("Wrong guess.")
+                self.attempts -= 1
         else:
-            print("Wrong guess.")
-            attempts -= 1
-    else:
-        print("\nGame over! The word was:", word)
+            print("\nGame over! The word was:", self.word)
 
-# Using a main guard to run the game
-# This allows the game to be run directly or imported without executing the game automatically.
-# Using this for now until I expand the game with more features or export to exe file
+# Main guard
 if __name__ == "__main__":
-    play_game()
+    game = PokemonWordRaider()
+    game.play()
