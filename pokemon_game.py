@@ -1,21 +1,12 @@
-# Pokemon Word Raider Game
-# A simple word guessing game where players guess the names of Pokemon.
+# pokemon_game.py
+# Author: Laura Donnelly	
 
-# Author: Laura Donnelly
+# This is the object of the Pokemon Word Raider game.
+# Adding the code here to import it as an object in the future.
+# This will allow for debugging and testing the game more easily.
 
-# Plan on expanding the game with more features in the future.
-# Such as adding pictures and sound affects, adding difficulty levels and exporting the game to a web app.
 
-# Import necessary libraries
-# Importing random to select a random Pokemon from the list.
-# See: https://docs.python.org/3/library/random.html
 import random
-
-# Define the PokemonWordRaider class
-# Using an object instead of a function to run the game. 
-# Doing this allows for easier expansion in the future.
-
-# This class contains the list of Pokemon, the game logic, and methods to display the word and handle guesses.
 
 class PokemonWordRaider:
     POKEMON_LIST = [
@@ -30,17 +21,13 @@ class PokemonWordRaider:
     def __init__(self):
         self.word = random.choice(self.POKEMON_LIST)
         self.guessed_letters = set()
-        self.attempts = 6  # Default, updated in choose_difficulty
+        self.attempts = 6
         self.difficulty = "medium"
 
-    # Method to choose difficulty level
-    # This method allows the player to choose a difficulty level which affects the number of attempts.
     def choose_difficulty(self):
         print("Choose a difficulty: easy / medium / hard")
         choice = input("Your choice: ").lower()
-        
-        # Set attempts based on difficulty choice using if-elif-else statements.
-        # See: https://docs.python.org/3/tutorial/controlflow.html#if-elif-else
+
         if choice == "easy":
             self.attempts = 8
             self.difficulty = "easy"
@@ -51,14 +38,8 @@ class PokemonWordRaider:
             self.attempts = 6
             self.difficulty = "medium"
 
-        # Print the difficulty level and attempts
-        # Using f-strings for formatted output.
-        # Using .capitalize() to format the difficulty level as a capitalized string.
         print(f"\nDifficulty set to {self.difficulty.capitalize()}. You have {self.attempts} attempts.\n")
 
-    # Method to display the current state of the word
-    # This method returns the word with guessed letters revealed and unguessed letters as underscores.
-    # Gives the user a visual representation of their progress.
     def display_word(self):
         return ' '.join([letter if letter in self.guessed_letters else '_' for letter in self.word])
 
@@ -93,8 +74,3 @@ class PokemonWordRaider:
                 self.attempts -= 1
         else:
             print("\n💀 Game over! The word was:", self.word)
-
-# Main guard
-if __name__ == "__main__":
-    game = PokemonWordRaider()
-    game.play()
